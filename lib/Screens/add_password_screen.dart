@@ -76,13 +76,21 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
     }*/
     final FirebaseFirestore db = FirebaseFirestore.instance;
 
-    Future<void> addPass() async {
-      return db.collection('User 1').add({
-        'Name': _newKey.title,
+    void addPass() {
+      //   return db.collection('User 1').add({
+      //     'Name': _newKey.title,
+      //     'Email': _newKey.email,
+      //     'Username': _newKey.username,
+      //     'Password': _newKey.password
+      //   }).then((value) => print("Added Data with ID: "));
+      // }
+      print('add pass');
+      db.collection("User 1").doc(_newKey.id).set({
+        "Name": _newKey.title,
         'Email': _newKey.email,
         'Username': _newKey.username,
         'Password': _newKey.password
-      }).then((value) => print("Added Data with ID: "));
+      });
     }
 
     return Scaffold(
@@ -230,7 +238,7 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                         onPressed: () {
                           if (_form.currentState!.validate()) {
                             _saveForm();
-                            addPass;
+                            addPass();
                           }
                         },
                         child: Text('Save'))

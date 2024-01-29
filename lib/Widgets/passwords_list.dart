@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive/responsive.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../Models/userkey.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -39,45 +41,62 @@ class PasswordListState extends State<PasswordList> {
             realPass.add(a);
             a['id'] = document.id;
           }).toList();
+          print(realPass);
+
+          Device.orientation == Orientation.portrait
+              ? Container(
+                  // Widget for Portrait
+                  width: 100.w,
+                  height: 20.5.h,
+                )
+              : Container(
+                  // Widget for Landscape
+                  width: 100.w,
+                  height: 12.5.h,
+                );
 
           return Padding(
             padding: EdgeInsets.fromLTRB(2, 10, 2, 10),
             child: ListView.builder(
                 itemBuilder: ((context, index) {
+                  print(realPass[index]);
                   return InkWell(
-                    child: Card(
-                        elevation: 3,
-                        child: ListTile(
-                          leading: Container(
-                            child: Icon(Icons.lock_sharp),
-                            margin: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.black54,
-                                width: 3,
+                    child: Container(
+                        width: Adaptive.w(50),
+                        child: Card(
+                            elevation: 3,
+                            child: ListTile(
+                              leading: Container(
+                                child: Icon(Icons.lock_sharp),
+                                margin: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black54,
+                                    width: 3,
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                ),
+                                padding: EdgeInsets.all(5),
                               ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                            ),
-                            padding: EdgeInsets.all(5),
-                          ),
-                          title: Text(
-                            realPass[index]['Name']!,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 21,
-                                color: const Color.fromARGB(255, 60, 60, 60)),
-                          ),
-                          subtitle: Text(realPass[index]['Email']!,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17,
-                                  color: Colors.grey)),
-                          horizontalTitleGap: 0,
-                        )),
-                    onTap: () {
-                      print(realPass[index]);
-                    },
+                              title: Text(
+                                realPass[index]['Name'],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 21,
+                                    color:
+                                        const Color.fromARGB(255, 60, 60, 60)),
+                              ),
+                              subtitle: Text(realPass[index]['Email']!,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15,
+                                      color: Colors.grey)),
+                              horizontalTitleGap: 0,
+                              onTap: () {
+                                print(realPass[index]);
+                              },
+                            ))),
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     splashColor: Theme.of(context).primaryColor,
                   );
@@ -87,8 +106,3 @@ class PasswordListState extends State<PasswordList> {
         });
   }
 }
-
-
-
-
-//Text( passwords[index].username, style: TextStyle( fontWeight: FontWeight.w500, fontSize: 17, color: Colors.grey))

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pass/screens/add_password_screen.dart';
 import 'package:pass/Widgets/passwords_list.dart';
+import 'package:pass/screens/generator_screen.dart';
 
 class VaultScreen extends StatefulWidget {
   static const routeName = '/vaultscreen';
@@ -41,8 +42,11 @@ class VaultScreenState extends State<VaultScreen> {
                     BottomNavigationBarItem(
                         icon: Icon(Icons.lock), label: 'Vault'),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.generating_tokens),
-                        label: 'Generator'),
+                      // ,
+                      icon: Icon(Icons.model_training),
+
+                      label: 'Generator',
+                    ),
                     BottomNavigationBarItem(
                         icon: Icon(Icons.settings), label: 'Settings'),
                   ],
