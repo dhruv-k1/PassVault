@@ -1,15 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:pass/Bottom%20navigation%20bar/home_screen.dart';
+import 'package:pass/Models/themes.dart';
 import 'package:pass/firebase_options.dart';
-import 'package:pass/screens/generator_screen.dart';
+import 'package:pass/Bottom%20navigation%20bar/generator_screen.dart';
 import 'package:pass/screens/login_screen.dart';
 import 'package:pass/screens/signup_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'provider/addpassword_provider.dart';
 import 'package:pass/screens/add_password_screen.dart';
 import 'package:provider/provider.dart';
-import 'screens/vault_screen.dart';
+import 'Bottom navigation bar/vault_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,16 +60,19 @@ class MyApp extends StatelessWidget {
                 ListenableProvider<Password>(create: (context) => Password())
               ],
               child: MaterialApp(
+                theme: ThemeClass.lightTheme,
+                darkTheme: ThemeClass.darkTheme,
                 // theme: ThemeData(
-                //colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                //useMaterial3: true,
-                //),
+                //   colorScheme:
+                //       ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                //   useMaterial3: true,
+                // ),
                 home: ResponsiveSizer(
                     builder: (context, orientation, screenType) {
                   return LoginScreen();
                 }),
-
                 routes: {
+                  HomeScreen.routeName: (context) => HomeScreen(),
                   VaultScreen.routeName: (ctx) => VaultScreen(),
                   AddPasswordScreen.routeName: (ctx) => AddPasswordScreen(),
                   LoginScreen.routeName: (ctx) => LoginScreen(),

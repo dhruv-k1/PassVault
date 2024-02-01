@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pass/provider/addpassword_provider.dart';
-import 'package:pass/screens/vault_screen.dart';
+import '../Bottom navigation bar/vault_screen.dart';
 import 'package:provider/provider.dart';
 import '../Models/userkey.dart';
 
@@ -43,6 +43,7 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     void _saveForm() {
       _form.currentState?.save();
 
@@ -91,6 +92,16 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
         'Username': _newKey.username,
         'Password': _newKey.password
       });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        width: size.width * 0.5,
+        behavior: SnackBarBehavior.floating,
+        //backgroundColor: Colors.red,
+        content: Text(
+          'Password successfully stored!',
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(seconds: 2), // Set the duration
+      ));
     }
 
     return Scaffold(

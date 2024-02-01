@@ -19,10 +19,14 @@ class PasswordListState extends State<PasswordList> {
   final Stream<QuerySnapshot> savedPasswords =
       FirebaseFirestore.instance.collection('User 1').snapshots();
 
+  //  void showPassword(id)  {
+  //       Stream<DocumentSnapshot> savedInfo = FirebaseFirestore.instance.collection('User 1').doc(id).snapshots();
+  //     }
+
   @override
   Widget build(BuildContext context) {
     //List<UserKey> passwords = context.watch<Password>().fake;
-
+    Size size = MediaQuery.of(context).size;
     return StreamBuilder(
         stream: savedPasswords,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -43,6 +47,33 @@ class PasswordListState extends State<PasswordList> {
           }).toList();
           print(realPass);
 
+          // final List showPassword = [];
+          //  snapshot.data!.docs.map((CollectionSnap document) {
+          // Map v = document.data() as Map<String, dynamic>;}).toList();
+
+          void showPassword(i) {
+            print(realPass[i]['Password']);
+          }
+
+          Future<void> deletePassword(id) async {
+            try {
+              await firestore.collection("User 1").doc(id).delete().then((doc) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  width: size.width * 0.4,
+                  behavior: SnackBarBehavior.floating,
+                  //backgroundColor: Colors.red,
+                  content: Text(
+                    'Password removed!',
+                    textAlign: TextAlign.center,
+                  ),
+                  duration: Duration(seconds: 1), // Set the duration
+                ));
+              });
+            } catch (e) {
+              print("Error deleting document $e");
+            }
+          }
+
           Device.orientation == Orientation.portrait
               ? Container(
                   // Widget for Portrait
@@ -55,54 +86,216 @@ class PasswordListState extends State<PasswordList> {
                   height: 12.5.h,
                 );
 
-          return Padding(
-            padding: EdgeInsets.fromLTRB(2, 10, 2, 10),
-            child: ListView.builder(
-                itemBuilder: ((context, index) {
-                  print(realPass[index]);
-                  return InkWell(
-                    child: Container(
-                        width: Adaptive.w(50),
-                        child: Card(
-                            elevation: 3,
-                            child: ListTile(
-                              leading: Container(
-                                child: Icon(Icons.lock_sharp),
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black54,
-                                    width: 3,
+          if (realPass.length >= 1) {
+            return Padding(
+              padding: EdgeInsets.fromLTRB(2, 10, 2, 10),
+              child: ListView.builder(
+                  itemBuilder: ((context, index) {
+                    print(realPass[index]);
+                    return InkWell(
+                      child: Container(
+                          // width: size.width * 0.1,
+                          child: Card(
+                              elevation: 3,
+                              child: ListTile(
+                                leading: Container(
+                                  child: Icon(Icons.lock_sharp),
+                                  margin: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.black54,
+                                      width: size.aspectRatio * 6,
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
                                   ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                  padding: EdgeInsets.all(5),
                                 ),
-                                padding: EdgeInsets.all(5),
-                              ),
-                              title: Text(
-                                realPass[index]['Name'],
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 21,
-                                    color:
-                                        const Color.fromARGB(255, 60, 60, 60)),
-                              ),
-                              subtitle: Text(realPass[index]['Email']!,
+                                title: Text(
+                                  realPass[index]['Name'],
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 15,
-                                      color: Colors.grey)),
-                              horizontalTitleGap: 0,
-                              onTap: () {
-                                print(realPass[index]);
-                              },
-                            ))),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    splashColor: Theme.of(context).primaryColor,
-                  );
-                }),
-                itemCount: realPass.length),
-          );
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: size.height * 0.028,
+                                      color: const Color.fromARGB(
+                                          255, 60, 60, 60)),
+                                ),
+                                subtitle: Text(realPass[index]['Email']!,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: size.height * 0.02,
+                                        color: Colors.grey)),
+                                horizontalTitleGap: 0,
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                      )),
+                                      context: context,
+                                      builder: (context) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  border: Border(
+                                                      bottom: BorderSide(
+                                                          color: Colors
+                                                              .grey.shade400,
+                                                          width: size.height *
+                                                              0.0016))),
+                                              child: ListTile(
+                                                title: Text(
+                                                  'Show Password',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                                trailing:
+                                                    Icon(Icons.remove_red_eye),
+                                                onTap: () {
+                                                  showPassword(index);
+                                                  Navigator.pop(context);
+
+                                                  showDialog(
+                                                    barrierDismissible: true,
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return SimpleDialog(
+                                                          title: Text(
+                                                            realPass[index]
+                                                                ['Name'],
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    size.height *
+                                                                        0.03),
+                                                          ),
+                                                          children: [
+                                                            SimpleDialogOption(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context); // Dismiss the SimpleDialog
+                                                              },
+                                                              child: Text(
+                                                                'Email: ' +
+                                                                    realPass[
+                                                                            index]
+                                                                        [
+                                                                        "Email"],
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        size.height *
+                                                                            0.02,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w300),
+                                                              ),
+                                                            ),
+                                                            SimpleDialogOption(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context); // Dismiss the SimpleDialog
+                                                              },
+                                                              child: Text(
+                                                                'Username: ' +
+                                                                    realPass[
+                                                                            index]
+                                                                        [
+                                                                        "Username"],
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        size.height *
+                                                                            0.02),
+                                                              ),
+                                                            ),
+                                                            SimpleDialogOption(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context); // Dismiss the SimpleDialog
+                                                              },
+                                                              child: Text(
+                                                                'Password: ' +
+                                                                    realPass[
+                                                                            index]
+                                                                        [
+                                                                        "Password"],
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        size.height *
+                                                                            0.02),
+                                                              ),
+                                                            ),
+                                                          ]);
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  border: Border(
+                                                      bottom: BorderSide(
+                                                          color: Colors
+                                                              .grey.shade400,
+                                                          width: size.height *
+                                                              0.0016))),
+                                              child: ListTile(
+                                                title: Text('Edit'),
+                                                trailing: Icon(Icons.edit),
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  border: Border(
+                                                      bottom: BorderSide(
+                                                          color: Colors
+                                                              .grey.shade400,
+                                                          width: size.height *
+                                                              0.0016))),
+                                              child: ListTile(
+                                                title: Text('Delete'),
+                                                trailing: Icon(Icons.delete),
+                                                onTap: () {
+                                                  deletePassword(
+                                                      realPass[index]['id']);
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                              ))),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      splashColor: Theme.of(context).primaryColor,
+                    );
+                  }),
+                  itemCount: realPass.length),
+            );
+          } else
+            return Container(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'No passwords stored yet...',
+                      style: TextStyle(
+                        fontSize: size.height * 0.2,
+                        color: Colors.grey,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
         });
   }
 }
