@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:pass/provider/addpassword_provider.dart';
 import '../Bottom navigation bar/vault_screen.dart';
 import 'package:provider/provider.dart';
+import '../Models/encryption.dart';
+
 import '../Models/userkey.dart';
 
 class AddPasswordScreen extends StatefulWidget {
@@ -41,50 +43,19 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
     super.dispose();
   }
 
+  final encryptionService = EncryptionService();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     void _saveForm() {
       _form.currentState?.save();
-
-      print(_newKey.id);
-      print(_newKey.title);
-      print(_newKey.username);
-      print(_newKey.password);
-      print(_newKey.email);
-
-      context.read<Password>().addNewPassword(
-          ntitle: _newKey.title,
-          nusername: _newKey.username,
-          npassword: _newKey.password,
-          nid: _newKey.id,
-          nemail: _newKey.email);
-      Navigator.of(context).pop(VaultScreen.routeName);
     }
 
-    /*CollectionReference CurrentPasswords =
-        FirebaseFirestore.instance.collection('User 1');
-
-    Future<void> addPass() {
-      return CurrentPasswords.add({
-        'Name': _newKey.title,
-        'Email': _newKey.email,
-        'Username': _newKey.username,
-        'Password': _newKey.password
-      })
-          .then((value) => print('password added!'))
-          .catchError((error) => print('FAiled'));
-    }*/
     final FirebaseFirestore db = FirebaseFirestore.instance;
 
     void addPass() {
-      //   return db.collection('User 1').add({
-      //     'Name': _newKey.title,
-      //     'Email': _newKey.email,
-      //     'Username': _newKey.username,
-      //     'Password': _newKey.password
-      //   }).then((value) => print("Added Data with ID: "));
-      // }
       print('add pass');
       db.collection("User 1").doc(_newKey.id).set({
         "Name": _newKey.title,
@@ -102,6 +73,7 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
         ),
         duration: Duration(seconds: 2), // Set the duration
       ));
+      Navigator.of(context).pop(VaultScreen.routeName);
     }
 
     return Scaffold(
@@ -112,13 +84,14 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
               onPressed: () {
                 if (_form.currentState!.validate()) {
                   _saveForm();
+                  addPass();
                 }
               },
               icon: Icon(Icons.save))
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(size.width * 0.04),
         child: Form(
             key: _form,
             child: ListView(children: <Widget>[
@@ -199,10 +172,13 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                   },
                   onSaved: (value) {
                     if (value != null) {
+                      String encryptedValue =
+                          encryptionService.encryptPassword(value).base64;
+
                       _newKey = UserKey(
                           id: _newKey.id,
                           username: _newKey.username,
-                          password: value,
+                          password: encryptedValue,
                           title: _newKey.title,
                           email: _newKey.email);
                     } else

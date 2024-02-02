@@ -33,15 +33,3 @@ String generateRandomPassword({
 
   return String.fromCharCodes(codes);
 }
-
-// void main() {
-//   String password = generateRandomPassword(
-//     includeLowercase: true,
-//     includeUppercase: true,
-//     includeNumbers: true,
-//     includeSpecialChars: true,
-//     length: 16,
-//   );
-
-//   print('Generated Password: $password');
-// }

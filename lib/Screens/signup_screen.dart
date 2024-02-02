@@ -1,8 +1,9 @@
-import 'dart:ffi';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pass/Bottom%20navigation%20bar/home_screen.dart';
 import 'package:pass/Bottom%20navigation%20bar/vault_screen.dart';
+import 'package:pass/screens/login_screen.dart';
+import 'package:pass/user_auth/firebase_auth_services.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -20,15 +21,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool invisibleText = true;
   bool invisibleText2 = true;
 
+  //final FirebaseAuthService _auth = FirebaseAuthService();
+
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    String storeMaster = '';
+    String storeEmail = '';
+
+    void _saveForm() {
+      _form.currentState?.save();
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Sign Up'),
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.of(context).popAndPushNamed(HomeScreen.routeName);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed(HomeScreen.routeName);
               },
               icon: Icon(Icons.check),
             )
@@ -53,11 +77,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       children: [
                         Text('Create Account',
                             style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.w500)),
+                                fontSize: size.height * 0.03,
+                                fontWeight: FontWeight.w500)),
                         SizedBox(
-                          height: 35,
+                          height: size.height * 0.01,
                         ),
                         TextFormField(
+                          controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                             // filled: true,
@@ -69,6 +95,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 onPressed: () {}, icon: Icon(Icons.mail)),
                             //border: OutlineInputBorder()
                           ),
+                          onSaved: (value) {
+                            setState(() {
+                              storeEmail = value!;
+                            });
+                          },
                           onFieldSubmitted: (_) {
                             FocusScope.of(context)
                                 .requestFocus(_masterpFocusNode);
@@ -78,11 +109,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           height: 55,
                         ),
                         TextFormField(
+                          // controller: _passwordController,
                           focusNode: _masterpFocusNode,
-                          keyboardType: TextInputType.emailAddress,
+                          //keyboardType: TextInputType.emailAddress,
                           obscureText: invisibleText,
                           decoration: InputDecoration(
-
                               // filled: true,
                               prefixIconColor: Colors.black,
                               // fillColor: Colors.red[200],
@@ -100,6 +131,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   icon: Icon(invisibleText
                                       ? Icons.visibility
                                       : Icons.visibility_off))),
+                          onSaved: (value) {
+                            setState(() {
+                              storeMaster = value!;
+                            });
+                          },
                           onFieldSubmitted: (_) {
                             FocusScope.of(context)
                                 .requestFocus(_confirmmasterpFocusNode);
@@ -110,10 +146,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         TextFormField(
                           focusNode: _confirmmasterpFocusNode,
-                          keyboardType: TextInputType.emailAddress,
+                          //keyboardType: TextInputType.emailAddress,
                           obscureText: invisibleText2,
+                          validator: (value) {
+                            if (value != storeMaster) {
+                              return 'Master password doesn\'t match';
+                            } else
+                              return null;
+                          },
+                          onFieldSubmitted: (_) => _saveForm(),
                           decoration: InputDecoration(
-
                               // filled: true,
                               prefixIconColor: Colors.black,
                               // fillColor: Colors.red[200],
@@ -139,7 +181,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton(
-                                onPressed: () {}, child: Text('Continue'))
+                                onPressed: () async {
+                                  print('object');
+                                  final data = await FirebaseAuth.instance
+                                      .signInWithEmailAndPassword(
+                                    email: storeEmail,
+                                    password: storeMaster,
+                                  );
+                                  print(data);
+                                  _saveForm();
+                                  // if (_form.currentState!.validate()) {
+                                  //   FirebaseAuthService
+                                  //       .signupwithEmailandPassword(
+                                  //           storeEmail, storeMaster, context);
+                                  //   signUp(
+                                  //       email: storeEmail,
+                                  //       masterpassword: storeMaster);
+                                  //   ScaffoldMessenger.of(context)
+                                  //       .showSnackBar(SnackBar(
+                                  //     width: size.width * 0.5,
+                                  //     behavior: SnackBarBehavior.floating,
+                                  //     //backgroundColor: Colors.red,
+                                  //     content: Text(
+                                  //       'Successfully signed up!',
+                                  //       textAlign: TextAlign.center,
+                                  //     ),
+                                  //     duration: Duration(seconds: 2),
+                                  //     // Set the duration
+                                  //   ));
+                                  // }
+                                },
+                                child: Text('Continue'))
                           ],
                         )
                       ]),

@@ -97,11 +97,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  //       decoration: BoxDecoration(
-                  //           borderRadius: BorderRadius.circular(300))),
-                  //   borderRadius: BorderRadius.circular(300),
-                  //   splashColor: Theme.of(context).canvasColor,
-                  // ),
                   SizedBox(
                     height: size.height * 0.1,
                   ),

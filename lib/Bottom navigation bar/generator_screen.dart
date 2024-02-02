@@ -63,10 +63,10 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
               height: size.height * 0.27,
               width: double.maxFinite,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 122, 205, 126),
+                color: Color.fromARGB(255, 6, 147, 48),
                 border: Border(
                     bottom: BorderSide(
-                        color: Colors.green.shade900,
+                        color: Color.fromARGB(255, 2, 55, 32),
                         width: size.height * 0.007)),
               ),
               child: Stack(children: [
@@ -75,7 +75,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                   child: Text(
                     rpass,
                     style: TextStyle(
-                        fontSize: size.height * 0.04, color: Colors.amber),
+                        fontSize: size.height * 0.04, color: Colors.white),
                   ),
                 ),
                 Align(
@@ -96,7 +96,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                       ));
                     },
                     icon: Icon(Icons.copy_outlined),
-                    color: Colors.amber,
+                    color: Colors.white,
                     visualDensity: VisualDensity.compact,
                   ),
                 )

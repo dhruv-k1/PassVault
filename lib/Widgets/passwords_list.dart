@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
+import 'package:pass/Models/encryption.dart';
+import 'package:pass/screens/update_password_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive/responsive.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+
 import '../Models/userkey.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -19,14 +21,13 @@ class PasswordListState extends State<PasswordList> {
   final Stream<QuerySnapshot> savedPasswords =
       FirebaseFirestore.instance.collection('User 1').snapshots();
 
-  //  void showPassword(id)  {
-  //       Stream<DocumentSnapshot> savedInfo = FirebaseFirestore.instance.collection('User 1').doc(id).snapshots();
-  //     }
+  final encryptionService = EncryptionService();
 
   @override
   Widget build(BuildContext context) {
     //List<UserKey> passwords = context.watch<Password>().fake;
     Size size = MediaQuery.of(context).size;
+
     return StreamBuilder(
         stream: savedPasswords,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -45,14 +46,12 @@ class PasswordListState extends State<PasswordList> {
             realPass.add(a);
             a['id'] = document.id;
           }).toList();
-          print(realPass);
 
-          // final List showPassword = [];
-          //  snapshot.data!.docs.map((CollectionSnap document) {
-          // Map v = document.data() as Map<String, dynamic>;}).toList();
-
-          void showPassword(i) {
-            print(realPass[i]['Password']);
+          String realPassword(String pa) {
+            final enPassword = Encrypted.fromBase64(pa);
+            String dePassword = encryptionService.decryptPassword(enPassword);
+            // String dePass = encryptionService.decryptPassword(pa);
+            return dePassword;
           }
 
           Future<void> deletePassword(id) async {
@@ -74,24 +73,11 @@ class PasswordListState extends State<PasswordList> {
             }
           }
 
-          Device.orientation == Orientation.portrait
-              ? Container(
-                  // Widget for Portrait
-                  width: 100.w,
-                  height: 20.5.h,
-                )
-              : Container(
-                  // Widget for Landscape
-                  width: 100.w,
-                  height: 12.5.h,
-                );
-
           if (realPass.length >= 1) {
             return Padding(
               padding: EdgeInsets.fromLTRB(2, 10, 2, 10),
               child: ListView.builder(
                   itemBuilder: ((context, index) {
-                    print(realPass[index]);
                     return InkWell(
                       child: Container(
                           // width: size.width * 0.1,
@@ -155,7 +141,9 @@ class PasswordListState extends State<PasswordList> {
                                                 trailing:
                                                     Icon(Icons.remove_red_eye),
                                                 onTap: () {
-                                                  showPassword(index);
+                                                  // print(realPassword(
+                                                  //     realPass[index]
+                                                  //         ["Password"]));
                                                   Navigator.pop(context);
 
                                                   showDialog(
@@ -167,11 +155,21 @@ class PasswordListState extends State<PasswordList> {
                                                           title: Text(
                                                             realPass[index]
                                                                 ['Name'],
+                                                            textAlign: TextAlign
+                                                                .center,
                                                             style: TextStyle(
                                                                 fontSize:
                                                                     size.height *
-                                                                        0.03),
+                                                                        0.03,
+                                                                color: Colors
+                                                                    .grey
+                                                                    .shade800),
                                                           ),
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
                                                           children: [
                                                             SimpleDialogOption(
                                                               onPressed: () {
@@ -188,9 +186,8 @@ class PasswordListState extends State<PasswordList> {
                                                                     fontSize:
                                                                         size.height *
                                                                             0.02,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w300),
+                                                                    color: Colors
+                                                                        .grey),
                                                               ),
                                                             ),
                                                             SimpleDialogOption(
@@ -207,7 +204,9 @@ class PasswordListState extends State<PasswordList> {
                                                                 style: TextStyle(
                                                                     fontSize:
                                                                         size.height *
-                                                                            0.02),
+                                                                            0.02,
+                                                                    color: Colors
+                                                                        .grey),
                                                               ),
                                                             ),
                                                             SimpleDialogOption(
@@ -224,7 +223,9 @@ class PasswordListState extends State<PasswordList> {
                                                                 style: TextStyle(
                                                                     fontSize:
                                                                         size.height *
-                                                                            0.02),
+                                                                            0.02,
+                                                                    color: Colors
+                                                                        .grey),
                                                               ),
                                                             ),
                                                           ]);
@@ -246,6 +247,16 @@ class PasswordListState extends State<PasswordList> {
                                                 trailing: Icon(Icons.edit),
                                                 onTap: () {
                                                   Navigator.pop(context);
+
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              UpdatePasswordScreen(
+                                                                id: realPass[
+                                                                        index]
+                                                                    ['id'],
+                                                              )));
                                                 },
                                               ),
                                             ),

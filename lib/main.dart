@@ -7,7 +7,7 @@ import 'package:pass/firebase_options.dart';
 import 'package:pass/Bottom%20navigation%20bar/generator_screen.dart';
 import 'package:pass/screens/login_screen.dart';
 import 'package:pass/screens/signup_screen.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:pass/screens/update_password_screen.dart';
 import 'provider/addpassword_provider.dart';
 import 'package:pass/screens/add_password_screen.dart';
 import 'package:provider/provider.dart';
@@ -28,31 +28,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ResponsiveSizer(
-    //   builder:  (context, Orientation.portrait, ScreenType.mobile){
-    //     Device.orientation == Orientation.portrait
-    // ? Container(   // Widget for Portrait
-    //     width: 100.w,
-    //     height: 20.5.h,
-    //  )
-    // : Container(   // Widget for Landscape
-    //     width: 100.w,
-    //     height: 12.5.h,
-    //  );
-    //  Device.screenType == ScreenType.tablet
-    // ? Container(   // Widget for Tablet
-    //     width: 100.w,
-    //     height: 20.5.h,
-    //  )
-    // : Container(   // Widget for Mobile
-    //     width: 100.w,
-    //     height: 12.5.h,
-    //  );
     return FutureBuilder(
         future: _initialization,
         builder: ((context, snapshot) {
           if (snapshot.hasError) {
-            print('error bro');
+            debugPrint('error bro');
           }
           if (snapshot.connectionState == ConnectionState.done) {
             return MultiProvider(
@@ -62,22 +42,14 @@ class MyApp extends StatelessWidget {
               child: MaterialApp(
                 theme: ThemeClass.lightTheme,
                 darkTheme: ThemeClass.darkTheme,
-                // theme: ThemeData(
-                //   colorScheme:
-                //       ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                //   useMaterial3: true,
-                // ),
-                home: ResponsiveSizer(
-                    builder: (context, orientation, screenType) {
-                  return LoginScreen();
-                }),
+                home: LoginScreen(),
                 routes: {
                   HomeScreen.routeName: (context) => HomeScreen(),
                   VaultScreen.routeName: (ctx) => VaultScreen(),
                   AddPasswordScreen.routeName: (ctx) => AddPasswordScreen(),
                   LoginScreen.routeName: (ctx) => LoginScreen(),
                   SignUpScreen.routeName: (context) => SignUpScreen(),
-                  GeneratorScreen.routeName: (context) => GeneratorScreen()
+                  GeneratorScreen.routeName: (context) => GeneratorScreen(),
                 },
               ),
             );
