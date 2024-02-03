@@ -35,40 +35,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final auth = FirebaseAuthService();
 
-  // Future<void> signUp(
-  //     String email, String password, BuildContext context) async {
-  //   try {
-  //     // Create user in Firebase Authentication
-  //     UserCredential userCredential =
-  //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     );
-
-  //     String uid = userCredential.user!.uid;
-
-  //     await FirebaseFirestore.instance.collection('users').doc(uid).set({
-  //       'Password': password,
-  //       'Email': email,
-  //     });
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //       //width: size.width * 0.5,
-  //       behavior: SnackBarBehavior.floating,
-  //       //backgroundColor: Colors.red,
-  //       content: Text(
-  //         'Successfully signed up!',
-  //         textAlign: TextAlign.center,
-  //       ),
-  //       duration: Duration(seconds: 2),
-  //       // Set the duration
-  //     ));
-
-  //     print('Signup successful');
-  //   } catch (e) {
-  //     print('Error during signup: $e');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

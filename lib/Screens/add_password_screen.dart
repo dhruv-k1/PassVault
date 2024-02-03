@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pass/provider/addpassword_provider.dart';
+
 import '../Bottom navigation bar/vault_screen.dart';
 import 'package:provider/provider.dart';
 import '../Models/encryption.dart';
@@ -27,6 +27,8 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
       password: '',
       username: null,
       email: '');
+
+  bool invisibleText = true;
 
   final nameController = TextEditingController();
   final usernameController = TextEditingController();
@@ -84,17 +86,22 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Password'),
-        actions: <Widget>[
-          IconButton(
-              onPressed: () {
-                if (_form.currentState!.validate()) {
-                  _saveForm();
-                  addPass();
-                }
-              },
-              icon: Icon(Icons.save))
-        ],
+        backgroundColor: Color.fromARGB(255, 221, 2, 2),
+        title: Text(
+          'Add Password',
+          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
+        // actions: <Widget>[
+        //   IconButton(
+        //       onPressed: () {
+        //         if (_form.currentState!.validate()) {
+        //           _saveForm();
+        //           addPass();
+        //         }
+        //       },
+        //       icon: Icon(Icons.save))
+        // ],
       ),
       body: Padding(
         padding: EdgeInsets.all(size.width * 0.04),
@@ -102,13 +109,16 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
             key: _form,
             child: ListView(children: <Widget>[
               TextFormField(
+                  autofocus: true,
                   decoration: InputDecoration(
                       hintText: 'Name',
                       labelText: 'Name',
                       labelStyle: TextStyle(
                         fontSize: 20,
                       ),
-                      border: OutlineInputBorder()),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(size.width * 0.05))),
                   textInputAction: TextInputAction.next,
                   controller: nameController,
                   onFieldSubmitted: (_) {
@@ -142,7 +152,9 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                       labelStyle: TextStyle(
                         fontSize: 20,
                       ),
-                      border: OutlineInputBorder()),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(size.width * 0.05))),
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) {
                     FocusScope.of(context).requestFocus(_passwordFocusNode);
@@ -164,14 +176,25 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
               ),
               TextFormField(
                   focusNode: _passwordFocusNode,
-                  obscureText: true,
+                  obscureText: invisibleText,
                   decoration: InputDecoration(
                       hintText: 'Password',
                       labelText: 'Password',
                       labelStyle: TextStyle(
                         fontSize: 20,
                       ),
-                      border: OutlineInputBorder()),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(size.width * 0.05)),
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              invisibleText = !invisibleText;
+                            });
+                          },
+                          icon: Icon(invisibleText
+                              ? Icons.visibility
+                              : Icons.visibility_off))),
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) {
                     FocusScope.of(context).requestFocus(_emailFocusNode);
@@ -194,6 +217,7 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                 height: 10,
               ),
               TextFormField(
+                initialValue: FirebaseAuth.instance.currentUser!.email,
                 focusNode: _emailFocusNode,
                 decoration: InputDecoration(
                     hintText: 'Email',
@@ -201,7 +225,9 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                     labelStyle: TextStyle(
                       fontSize: 20,
                     ),
-                    border: OutlineInputBorder()),
+                    border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(size.width * 0.05))),
                 validator: (value) {
                   if (value != null && !value.contains('@')) {
                     return 'Please enter valid email';
@@ -222,6 +248,9 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                 onFieldSubmitted: (_) {
                   _saveForm();
                 },
+              ),
+              SizedBox(
+                height: size.height * 0.03,
               ),
               Container(
                 child: Row(

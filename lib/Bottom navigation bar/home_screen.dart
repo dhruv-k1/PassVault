@@ -18,15 +18,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-        body: pages[myCurrentIndex],
+        body: Builder(builder: (context) => pages[myCurrentIndex]),
         bottomNavigationBar: Container(
           margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
           decoration: BoxDecoration(boxShadow: [
             BoxShadow(
                 color: Colors.black54.withOpacity(0.5),
-                blurRadius: 25,
-                offset: Offset(0, 20))
+                blurRadius: size.width * 0.08,
+                offset: Offset(0, size.width * 0.03))
           ]),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),

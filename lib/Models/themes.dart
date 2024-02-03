@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 
-ThemeClass themeClass = ThemeClass();
-
 class ThemeClass {
-  Color lightPrimaryColor = Colors.red.shade800;
-  Color darkPrimaryColor = Colors.grey.shade900;
+  Color lightPrimaryColor = Color.fromARGB(255, 250, 24, 24);
+  Color darkPrimaryColor = const Color.fromRGBO(33, 33, 33, 1);
   Color secondaryColor = Colors.red.shade300;
   Color accentColor = Colors.red.shade200;
 
-  static ThemeData lightTheme = ThemeData(
-      primaryColor: ThemeData.light().scaffoldBackgroundColor,
-      colorScheme: const ColorScheme.light().copyWith(
-        primary: themeClass.lightPrimaryColor,
-        secondary: themeClass.secondaryColor,
+  ThemeData lightTheme = ThemeData(
+      primaryColor: Color.fromARGB(255, 255, 0, 17),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: (Color.fromARGB(255, 255, 37, 52)),
+      ),
+      colorScheme: ColorScheme.light().copyWith(
+        primary: Color.fromARGB(255, 220, 36, 36),
+        secondary: Color.fromARGB(255, 167, 167, 167),
       ));
 
-  static ThemeData darkTheme = ThemeData(
+  ThemeData darkTheme = ThemeData(
       primaryColor: ThemeData.dark().scaffoldBackgroundColor,
       colorScheme: const ColorScheme.dark().copyWith(
-        primary: themeClass.darkPrimaryColor,
+        primary: const Color.fromRGBO(33, 33, 33, 1),
       ));
 }

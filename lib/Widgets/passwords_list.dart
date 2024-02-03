@@ -3,13 +3,12 @@ import 'package:encrypt/encrypt.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pass/Models/encryption.dart';
+import 'package:pass/Widgets/password_options.dart';
 import 'package:pass/screens/update_password_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../Models/userkey.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-import '../provider/addpassword_provider.dart';
 
 class PasswordList extends StatefulWidget {
   @override
@@ -87,213 +86,220 @@ class PasswordListState extends State<PasswordList> {
               padding: EdgeInsets.fromLTRB(2, 10, 2, 10),
               child: ListView.builder(
                   itemBuilder: ((context, index) {
-                    return InkWell(
-                      child: Container(
-                          // width: size.width * 0.1,
-                          child: Card(
-                              elevation: 3,
-                              child: ListTile(
-                                leading: Container(
-                                  child: Icon(Icons.lock_sharp),
-                                  margin: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.black54,
-                                      width: size.aspectRatio * 6,
-                                    ),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
+                    return Container(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: size.width * 0.01),
+                      child: InkWell(
+                        // width: size.width * 0.1,
+                        child: Card(
+                            color: Color.fromRGBO(255, 206, 206, 1),
+                            elevation: 3,
+                            child: ListTile(
+                              leading: Container(
+                                child: Icon(Icons.lock_sharp),
+                                margin: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black54,
+                                    width: size.aspectRatio * 6,
                                   ),
-                                  padding: EdgeInsets.all(5),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
                                 ),
-                                title: Text(
-                                  realPass[index]['Name'],
+                                padding: EdgeInsets.all(5),
+                              ),
+                              title: Text(
+                                realPass[index]['Name'],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: size.height * 0.028,
+                                    color:
+                                        const Color.fromARGB(255, 60, 60, 60)),
+                              ),
+                              subtitle: Text(realPass[index]['Email']!,
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: size.height * 0.028,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: size.height * 0.02,
                                       color: const Color.fromARGB(
-                                          255, 60, 60, 60)),
-                                ),
-                                subtitle: Text(realPass[index]['Email']!,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: size.height * 0.02,
-                                        color: Colors.grey)),
-                                horizontalTitleGap: 0,
-                                onTap: () {
-                                  showModalBottomSheet(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10),
-                                      )),
-                                      context: context,
-                                      builder: (context) {
-                                        return Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  border: Border(
-                                                      bottom: BorderSide(
-                                                          color: Colors
-                                                              .grey.shade400,
-                                                          width: size.height *
-                                                              0.0016))),
-                                              child: ListTile(
-                                                title: Text(
-                                                  'Show Password',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w300,
-                                                  ),
-                                                ),
-                                                trailing:
-                                                    Icon(Icons.remove_red_eye),
-                                                onTap: () {
-                                                  // print(realPassword(
-                                                  //     realPass[index]
-                                                  //         ["Password"]));
-                                                  Navigator.pop(context);
+                                          255, 90, 90, 90))),
+                              horizontalTitleGap: 0,
+                              onTap: () {
+                                showModalBottomSheet(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                    )),
+                                    context: context,
+                                    builder: (context) {
+                                      return BottomSheetDetails(
+                                        name: realPass[index]['Name'],
+                                        username: realPass[index]['Username'],
+                                        email: realPass[index]['Email'],
+                                        password: realPass[index]['Password'],
+                                        id: realPass[index]['id'],
+                                      );
 
-                                                  showDialog(
-                                                    barrierDismissible: true,
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return SimpleDialog(
-                                                          title: Text(
-                                                            realPass[index]
-                                                                ['Name'],
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    size.height *
-                                                                        0.03,
-                                                                color: Colors
-                                                                    .grey
-                                                                    .shade800),
-                                                          ),
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                          children: [
-                                                            SimpleDialogOption(
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context); // Dismiss the SimpleDialog
-                                                              },
-                                                              child: Text(
-                                                                'Email: ' +
-                                                                    realPass[
-                                                                            index]
-                                                                        [
-                                                                        "Email"],
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        size.height *
-                                                                            0.02,
-                                                                    color: Colors
-                                                                        .grey),
-                                                              ),
-                                                            ),
-                                                            SimpleDialogOption(
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context); // Dismiss the SimpleDialog
-                                                              },
-                                                              child: Text(
-                                                                'Username: ' +
-                                                                    realPass[
-                                                                            index]
-                                                                        [
-                                                                        "Username"],
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        size.height *
-                                                                            0.02,
-                                                                    color: Colors
-                                                                        .grey),
-                                                              ),
-                                                            ),
-                                                            SimpleDialogOption(
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context); // Dismiss the SimpleDialog
-                                                              },
-                                                              child: Text(
-                                                                'Password: ' +
-                                                                    realPass[
-                                                                            index]
-                                                                        [
-                                                                        "Password"],
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        size.height *
-                                                                            0.02,
-                                                                    color: Colors
-                                                                        .grey),
-                                                              ),
-                                                            ),
-                                                          ]);
-                                                    },
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  border: Border(
-                                                      bottom: BorderSide(
-                                                          color: Colors
-                                                              .grey.shade400,
-                                                          width: size.height *
-                                                              0.0016))),
-                                              child: ListTile(
-                                                title: Text('Edit'),
-                                                trailing: Icon(Icons.edit),
-                                                onTap: () {
-                                                  Navigator.pop(context);
+                                      // Column(
+                                      //   mainAxisSize: MainAxisSize.min,
+                                      //   children: [
+                                      //     Container(
+                                      //       decoration: BoxDecoration(
+                                      //           border: Border(
+                                      //               bottom: BorderSide(
+                                      //                   color: Colors
+                                      //                       .grey.shade400,
+                                      //                   width: size.height *
+                                      //                       0.0016))),
+                                      //       child: ListTile(
+                                      //         title: Text(
+                                      //           'Show Password',
+                                      //         ),
+                                      //         trailing:
+                                      //             Icon(Icons.remove_red_eye),
+                                      //         onTap: () {
+                                      //           // print(realPassword(
+                                      //           //     realPass[index]
+                                      //           //         ["Password"]));
+                                      //           Navigator.pop(context);
 
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              UpdatePasswordScreen(
-                                                                id: realPass[
-                                                                        index]
-                                                                    ['id'],
-                                                              )));
-                                                },
-                                              ),
-                                            ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  border: Border(
-                                                      bottom: BorderSide(
-                                                          color: Colors
-                                                              .grey.shade400,
-                                                          width: size.height *
-                                                              0.0016))),
-                                              child: ListTile(
-                                                title: Text('Delete'),
-                                                trailing: Icon(Icons.delete),
-                                                onTap: () {
-                                                  deletePassword(
-                                                      realPass[index]['id']);
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                },
-                              ))),
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      splashColor: Theme.of(context).primaryColor,
+                                      //           showDialog(
+                                      //             barrierDismissible: true,
+                                      //             context: context,
+                                      //             builder:
+                                      //                 (BuildContext context) {
+                                      //               return SimpleDialog(
+                                      //                   title: Text(
+                                      //                     realPass[index]
+                                      //                         ['Name'],
+                                      //                     textAlign:
+                                      //                         TextAlign.center,
+                                      //                     style: TextStyle(
+                                      //                         fontSize:
+                                      //                             size.height *
+                                      //                                 0.03,
+                                      //                         color: Colors.grey
+                                      //                             .shade800),
+                                      //                   ),
+                                      //                   shape: RoundedRectangleBorder(
+                                      //                       borderRadius:
+                                      //                           BorderRadius
+                                      //                               .circular(
+                                      //                                   10)),
+                                      //                   children: [
+                                      //                     SimpleDialogOption(
+                                      //                       onPressed: () {
+                                      //                         Navigator.pop(
+                                      //                             context); // Dismiss the SimpleDialog
+                                      //                       },
+                                      //                       child: Text(
+                                      //                         'Email: ' +
+                                      //                             realPass[
+                                      //                                     index]
+                                      //                                 ["Email"],
+                                      //                         style: TextStyle(
+                                      //                             fontSize:
+                                      //                                 size.height *
+                                      //                                     0.02,
+                                      //                             color: Colors
+                                      //                                 .grey),
+                                      //                       ),
+                                      //                     ),
+                                      //                     SimpleDialogOption(
+                                      //                       onPressed: () {
+                                      //                         Navigator.pop(
+                                      //                             context); // Dismiss the SimpleDialog
+                                      //                       },
+                                      //                       child: Text(
+                                      //                         'Username: ' +
+                                      //                             realPass[
+                                      //                                     index]
+                                      //                                 [
+                                      //                                 "Username"],
+                                      //                         style: TextStyle(
+                                      //                             fontSize:
+                                      //                                 size.height *
+                                      //                                     0.02,
+                                      //                             color: Colors
+                                      //                                 .grey),
+                                      //                       ),
+                                      //                     ),
+                                      //                     SimpleDialogOption(
+                                      //                       onPressed: () {
+                                      //                         Navigator.pop(
+                                      //                             context); // Dismiss the SimpleDialog
+                                      //                       },
+                                      //                       child: Text(
+                                      //                         'Password: ' +
+                                      //                             realPass[
+                                      //                                     index]
+                                      //                                 [
+                                      //                                 "Password"],
+                                      //                         style: TextStyle(
+                                      //                             fontSize:
+                                      //                                 size.height *
+                                      //                                     0.02,
+                                      //                             color: Colors
+                                      //                                 .grey),
+                                      //                       ),
+                                      //                     ),
+                                      //                   ]);
+                                      //             },
+                                      //           );
+                                      //         },
+                                      //       ),
+                                      //     ),
+                                      //     Container(
+                                      //       decoration: BoxDecoration(
+                                      //           border: Border(
+                                      //               bottom: BorderSide(
+                                      //                   color: Colors
+                                      //                       .grey.shade400,
+                                      //                   width: size.height *
+                                      //                       0.0016))),
+                                      //       child: ListTile(
+                                      //         title: Text('Edit'),
+                                      //         trailing: Icon(Icons.edit),
+                                      //         onTap: () {
+                                      //           Navigator.pop(context);
+
+                                      //           Navigator.push(
+                                      //               context,
+                                      //               MaterialPageRoute(
+                                      //                   builder: (context) =>
+                                      //                       UpdatePasswordScreen(
+                                      //                         id: realPass[
+                                      //                             index]['id'],
+                                      //                       )));
+                                      //         },
+                                      //       ),
+                                      //     ),
+                                      //     Container(
+                                      //       decoration: BoxDecoration(
+                                      //           border: Border(
+                                      //               bottom: BorderSide(
+                                      //                   color: Colors
+                                      //                       .grey.shade400,
+                                      //                   width: size.height *
+                                      //                       0.0016))),
+                                      //       child: ListTile(
+                                      //         title: Text('Delete'),
+                                      //         trailing: Icon(Icons.delete),
+                                      //         onTap: () {
+                                      //           deletePassword(
+                                      //               realPass[index]['id']);
+                                      //           Navigator.pop(context);
+                                      //         },
+                                      //       ),
+                                      //     ),
+                                      //   ],
+                                      // );
+                                    });
+                              },
+                            )),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        splashColor: Theme.of(context).primaryColor,
+                      ),
                     );
                   }),
                   itemCount: realPass.length),
