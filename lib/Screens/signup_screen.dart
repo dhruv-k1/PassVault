@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pass/Bottom%20navigation%20bar/home_screen.dart';
 import 'package:pass/Bottom%20navigation%20bar/vault_screen.dart';
+
 import 'package:pass/screens/login_screen.dart';
 import 'package:pass/user_auth/firebase_auth_services.dart';
 
@@ -21,8 +23,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool invisibleText = true;
   bool invisibleText2 = true;
 
-  //final FirebaseAuthService _auth = FirebaseAuthService();
-
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -32,6 +32,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _passwordController.dispose();
     super.dispose();
   }
+
+  final auth = FirebaseAuthService();
+
+  // Future<void> signUp(
+  //     String email, String password, BuildContext context) async {
+  //   try {
+  //     // Create user in Firebase Authentication
+  //     UserCredential userCredential =
+  //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: email,
+  //       password: password,
+  //     );
+
+  //     String uid = userCredential.user!.uid;
+
+  //     await FirebaseFirestore.instance.collection('users').doc(uid).set({
+  //       'Password': password,
+  //       'Email': email,
+  //     });
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //       //width: size.width * 0.5,
+  //       behavior: SnackBarBehavior.floating,
+  //       //backgroundColor: Colors.red,
+  //       content: Text(
+  //         'Successfully signed up!',
+  //         textAlign: TextAlign.center,
+  //       ),
+  //       duration: Duration(seconds: 2),
+  //       // Set the duration
+  //     ));
+
+  //     print('Signup successful');
+  //   } catch (e) {
+  //     print('Error during signup: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -181,35 +217,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton(
-                                onPressed: () async {
-                                  print('object');
-                                  final data = await FirebaseAuth.instance
-                                      .signInWithEmailAndPassword(
-                                    email: storeEmail,
-                                    password: storeMaster,
-                                  );
-                                  print(data);
+                                onPressed: () {
                                   _saveForm();
-                                  // if (_form.currentState!.validate()) {
-                                  //   FirebaseAuthService
-                                  //       .signupwithEmailandPassword(
-                                  //           storeEmail, storeMaster, context);
-                                  //   signUp(
-                                  //       email: storeEmail,
-                                  //       masterpassword: storeMaster);
-                                  //   ScaffoldMessenger.of(context)
-                                  //       .showSnackBar(SnackBar(
-                                  //     width: size.width * 0.5,
-                                  //     behavior: SnackBarBehavior.floating,
-                                  //     //backgroundColor: Colors.red,
-                                  //     content: Text(
-                                  //       'Successfully signed up!',
-                                  //       textAlign: TextAlign.center,
-                                  //     ),
-                                  //     duration: Duration(seconds: 2),
-                                  //     // Set the duration
-                                  //   ));
-                                  // }
+                                  if (_form.currentState!.validate()) {
+                                    auth.signUp(
+                                        storeEmail, storeMaster, context);
+
+                                    auth.signIn(
+                                        storeEmail, storeMaster, context);
+
+                                    // ScaffoldMessenger.of(context)
+                                    //     .showSnackBar(SnackBar(
+                                    //   width: size.width * 0.5,
+                                    //   behavior: SnackBarBehavior.floating,
+                                    //   //backgroundColor: Colors.red,
+                                    //   content: Text(
+                                    //     'Successfully signed up!',
+                                    //     textAlign: TextAlign.center,
+                                    //   ),
+                                    //   duration: Duration(seconds: 2),
+                                    //   // Set the duration
+                                    // ));
+                                  }
                                 },
                                 child: Text('Continue'))
                           ],

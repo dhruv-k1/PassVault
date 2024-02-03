@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pass/provider/addpassword_provider.dart';
 import '../Bottom navigation bar/vault_screen.dart';
@@ -57,7 +58,12 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
 
     void addPass() {
       print('add pass');
-      db.collection("User 1").doc(_newKey.id).set({
+      db
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('Saved passwords')
+          .doc(_newKey.id)
+          .set({
         "Name": _newKey.title,
         'Email': _newKey.email,
         'Username': _newKey.username,

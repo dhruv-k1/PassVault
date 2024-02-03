@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pass/screens/signup_screen.dart';
+import 'package:pass/user_auth/firebase_auth_services.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,9 +12,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  final _passwordFocusNode = FocusNode();
+
+  final auth = FirebaseAuthService();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -31,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: size.height * 0.35,
                   ),
                   Text(
-                    'Log In',
+                    'PassVault',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -42,6 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: size.height * 0.03,
                   ),
                   TextField(
+                    controller: _emailController,
+                    onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                     decoration: InputDecoration(
                         filled: true,
                         prefixIconColor: Colors.black87,
@@ -58,6 +70,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: size.height * 0.015,
                   ),
                   TextField(
+                    controller: _passwordController,
+                    textInputAction: TextInputAction.done,
                     decoration: InputDecoration(
                         filled: true,
                         prefixIconColor: Colors.black,
@@ -78,7 +92,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     width: size.width * 0.3,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        auth.signIn(_emailController.text,
+                            _passwordController.text, context);
+                      },
                       child: Container(
                         width: double.infinity,
                         height: size.height * 0.05,

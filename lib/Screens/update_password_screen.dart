@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pass/Bottom%20navigation%20bar/vault_screen.dart';
 
@@ -48,7 +49,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
         ),
         body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           future: FirebaseFirestore.instance
-              .collection('User 1')
+              .collection('users')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection('Saved passwords')
               .doc(widget.id)
               .get(),
           builder: (_, snapshot) {

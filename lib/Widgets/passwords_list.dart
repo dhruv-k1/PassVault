@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pass/Models/encryption.dart';
 import 'package:pass/screens/update_password_screen.dart';
@@ -18,14 +19,16 @@ class PasswordList extends StatefulWidget {
 class PasswordListState extends State<PasswordList> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  final Stream<QuerySnapshot> savedPasswords =
-      FirebaseFirestore.instance.collection('User 1').snapshots();
+  final Stream<QuerySnapshot> savedPasswords = FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('Saved passwords')
+      .snapshots();
 
   final encryptionService = EncryptionService();
 
   @override
   Widget build(BuildContext context) {
-    //List<UserKey> passwords = context.watch<Password>().fake;
     Size size = MediaQuery.of(context).size;
 
     return StreamBuilder(
@@ -56,7 +59,13 @@ class PasswordListState extends State<PasswordList> {
 
           Future<void> deletePassword(id) async {
             try {
-              await firestore.collection("User 1").doc(id).delete().then((doc) {
+              await firestore
+                  .collection("users")
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .collection('Saved passwords')
+                  .doc(id)
+                  .delete()
+                  .then((doc) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   width: size.width * 0.4,
                   behavior: SnackBarBehavior.floating,
@@ -299,7 +308,7 @@ class PasswordListState extends State<PasswordList> {
                     Text(
                       'No passwords stored yet...',
                       style: TextStyle(
-                        fontSize: size.height * 0.2,
+                        fontSize: size.height * 0.02,
                         color: Colors.grey,
                       ),
                     )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pass/Bottom%20navigation%20bar/generator_screen.dart';
+import 'package:pass/Bottom%20navigation%20bar/settings_screen.dart';
 import 'package:pass/Bottom%20navigation%20bar/vault_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int myCurrentIndex = 0;
-  List pages = [VaultScreen(), GeneratorScreen()];
+  List pages = [VaultScreen(), GeneratorScreen(), SettingsScreen()];
 
   @override
   Widget build(BuildContext context) {

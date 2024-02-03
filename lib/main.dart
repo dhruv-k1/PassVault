@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pass/Bottom%20navigation%20bar/home_screen.dart';
@@ -18,6 +20,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseFirestore.instance.settings =
       const Settings(persistenceEnabled: true);
+  // await FirebaseAppCheck.instance.activate();
   runApp(MyApp());
 }
 
@@ -42,7 +45,14 @@ class MyApp extends StatelessWidget {
               child: MaterialApp(
                 theme: ThemeClass.lightTheme,
                 darkTheme: ThemeClass.darkTheme,
-                home: LoginScreen(),
+                home: StreamBuilder(
+                    stream: FirebaseAuth.instance.authStateChanges(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return HomeScreen();
+                      } else
+                        return LoginScreen();
+                    }),
                 routes: {
                   HomeScreen.routeName: (context) => HomeScreen(),
                   VaultScreen.routeName: (ctx) => VaultScreen(),
