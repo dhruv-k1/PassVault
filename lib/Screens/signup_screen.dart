@@ -48,17 +48,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Sign Up'),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-                Navigator.of(context).pushNamed(HomeScreen.routeName);
-              },
-              icon: Icon(Icons.check),
-            )
-          ],
+          backgroundColor: Color.fromARGB(255, 221, 2, 2),
+          title: Text(
+            'Sign Up',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+          ),
+          iconTheme: IconThemeData(color: Colors.white),
         ),
         body: Container(
           height: double.maxFinite,
@@ -191,19 +186,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                                     auth.signIn(
                                         storeEmail, storeMaster, context);
-
-                                    // ScaffoldMessenger.of(context)
-                                    //     .showSnackBar(SnackBar(
-                                    //   width: size.width * 0.5,
-                                    //   behavior: SnackBarBehavior.floating,
-                                    //   //backgroundColor: Colors.red,
-                                    //   content: Text(
-                                    //     'Successfully signed up!',
-                                    //     textAlign: TextAlign.center,
-                                    //   ),
-                                    //   duration: Duration(seconds: 2),
-                                    //   // Set the duration
-                                    // ));
                                   }
                                 },
                                 child: Text('Continue'))

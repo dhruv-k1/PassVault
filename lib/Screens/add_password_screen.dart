@@ -92,16 +92,6 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
           style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
         ),
         iconTheme: IconThemeData(color: Colors.white),
-        // actions: <Widget>[
-        //   IconButton(
-        //       onPressed: () {
-        //         if (_form.currentState!.validate()) {
-        //           _saveForm();
-        //           addPass();
-        //         }
-        //       },
-        //       icon: Icon(Icons.save))
-        // ],
       ),
       body: Padding(
         padding: EdgeInsets.all(size.width * 0.04),
