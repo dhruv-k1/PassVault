@@ -20,6 +20,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: ElevatedButton(
               onPressed: () {
                 FirebaseAuth.instance.signOut();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //width: size.width * 0.5,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.red,
+                  content: Text(
+                    'Successfully signed out',
+                    textAlign: TextAlign.center,
+                  ),
+                  duration: Duration(seconds: 2),
+                ));
               },
               child: Text('Sign Out')),
         ));

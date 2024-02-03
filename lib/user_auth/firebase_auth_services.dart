@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pass/Bottom%20navigation%20bar/home_screen.dart';
-import 'package:pass/user_auth/firebase_functions.dart';
 
 import '../screens/login_screen.dart';
 
@@ -71,8 +70,26 @@ class FirebaseAuthService {
         ),
         duration: Duration(seconds: 2),
       ));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-email') {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Email doesn\'t exist')));
+      } else if (e.code == 'wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Incorrect password entered ')));
+      }
     } catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //width: size.width * 0.5,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.red,
+        content: Text(
+          e.toString(),
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(seconds: 2),
+      ));
+      ;
     }
   }
 }

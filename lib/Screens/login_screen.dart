@@ -15,8 +15,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  bool invisibleText = true;
 
-  final _passwordFocusNode = FocusNode();
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   final _auth = FirebaseAuthService();
   // final BiometricSignature _biometricSignature = BiometricSignature();
@@ -76,6 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextField(
                       controller: _passwordController,
+                      obscureText: invisibleText,
                       textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
                           filled: true,
@@ -85,6 +91,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintText: 'Master Password',
                           prefixIcon: IconButton(
                               onPressed: () {}, icon: Icon(Icons.key)),
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  invisibleText = !invisibleText;
+                                });
+                              },
+                              icon: Icon(invisibleText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off)),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30),
                               borderSide: BorderSide.none)),
