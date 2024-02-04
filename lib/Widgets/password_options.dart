@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pass/screens/update_password_screen.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 class BottomSheetDetails extends StatelessWidget {
   //const BottomSheetDetails({super.key});
@@ -19,6 +20,16 @@ class BottomSheetDetails extends StatelessWidget {
       this.id = ''});
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // final Key = encrypt.Key.fromUtf8('01234567890123456789012345678912');
+  // final iv = encrypt.IV.fromLength(16);
+
+  // String decryptPassword(String encryptedPassword) {
+  //   final encrypter =
+  //       encrypt.Encrypter(encrypt.AES(Key, mode: encrypt.AESMode.cbc));
+  //   final decrypted = encrypter.decrypt64(encryptedPassword, iv: iv);
+  //   return decrypted;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +75,6 @@ class BottomSheetDetails extends StatelessWidget {
             ),
             trailing: Icon(Icons.remove_red_eye),
             onTap: () {
-              // print(realPassword(
-              //     realPass[index]
-              //         ["Password"]));
               Navigator.pop(context);
               showDialog(
                 barrierDismissible: true,

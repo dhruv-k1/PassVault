@@ -3,9 +3,10 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pass/Bottom%20navigation%20bar/home_screen.dart';
 import 'package:pass/Models/themes.dart';
-import 'package:pass/firebase_options.dart';
+import 'package:pass/user_auth/firebase_options.dart';
 import 'package:pass/Bottom%20navigation%20bar/generator_screen.dart';
 import 'package:pass/screens/login_screen.dart';
 import 'package:pass/screens/signup_screen.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
             debugPrint('error bro');
           }
           if (snapshot.connectionState == ConnectionState.done) {
-            return MaterialApp(
+            return GetMaterialApp(
               debugShowCheckedModeBanner: false,
               theme: themeClass.lightTheme,
               //darkTheme: ThemeClass.darkTheme,

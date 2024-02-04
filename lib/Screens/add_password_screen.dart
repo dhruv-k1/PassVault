@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../Bottom navigation bar/vault_screen.dart';
-import 'package:provider/provider.dart';
 import '../Models/encryption.dart';
 
 import '../Models/userkey.dart';
@@ -208,6 +207,7 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
               ),
               TextFormField(
                 initialValue: FirebaseAuth.instance.currentUser!.email,
+                keyboardType: TextInputType.emailAddress,
                 focusNode: _emailFocusNode,
                 decoration: InputDecoration(
                     hintText: 'Email',

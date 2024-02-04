@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pass/Models/randomkey.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -36,15 +37,20 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
         setState(() {
           isLowercase = true;
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.red,
-          content: Text(
-            'Password must contain atleast one of these types',
-            textAlign: TextAlign.center,
-          ),
-          duration: Duration(seconds: 3), // Set the duration
-        ));
+
+        Get.snackbar(
+            'Error!', 'Password must contain atleast one of these type',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            titleText: Text(
+              'Error!',
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              textAlign: TextAlign.center,
+            ),
+            maxWidth: size.width * 0.9,
+            margin: EdgeInsets.all(size.height * 0.02));
       }
     }
 
