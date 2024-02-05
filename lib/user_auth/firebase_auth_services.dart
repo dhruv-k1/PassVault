@@ -7,8 +7,6 @@ import 'package:pass/Bottom%20navigation%20bar/home_screen.dart';
 import '../screens/login_screen.dart';
 
 class FirebaseAuthService {
-  //FirebaseAuth _auth = FirebaseAuth.instance;
-
   Future<void> signUp(
       String email, String password, BuildContext context) async {
     try {
@@ -62,18 +60,12 @@ class FirebaseAuthService {
         password: password,
       );
       print('Login successful');
-      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //   //width: size.width * 0.5,
-      //   behavior: SnackBarBehavior.floating,
-      //   //backgroundColor: Colors.red,
-      //   content: Text(
-      //     'Successfully logged in!',
-      //     textAlign: TextAlign.center,
-      //   ),
-      //   duration: Duration(seconds: 2),
-      // ));
+
       Get.snackbar('Logged In', 'Successfully signed in!',
           snackPosition: SnackPosition.BOTTOM,
+          titleText: Text('Logged In!',
+              style: TextStyle(color: Colors.white),
+              textAlign: TextAlign.center),
           messageText: Text('Successfully signed in!',
               style: TextStyle(color: Colors.white),
               textAlign: TextAlign.center),
@@ -83,8 +75,6 @@ class FirebaseAuthService {
           margin: EdgeInsets.all(size.height * 0.02));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
-        // ScaffoldMessenger.of(context)
-        //     .showSnackBar(SnackBar(content: Text('Email doesn\'t exist')));
         Get.snackbar('Error!', 'Email doesn\'t exist',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.red,
@@ -103,16 +93,6 @@ class FirebaseAuthService {
             margin: EdgeInsets.all(size.height * 0.02));
       }
     } catch (e) {
-      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //   //width: size.width * 0.5,
-      //   behavior: SnackBarBehavior.floating,
-      //   backgroundColor: Colors.red,
-      //   content: Text(
-      //     e.toString(),
-      //     textAlign: TextAlign.center,
-      //   ),
-      //   duration: Duration(seconds: 2),
-      // ));
       Get.snackbar('Error!', e.toString(),
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,

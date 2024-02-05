@@ -31,14 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       body: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                Color.fromARGB(255, 255, 235, 238),
-                Colors.red.shade100
-              ])),
+          decoration: BoxDecoration(color: Color.fromARGB(255, 255, 206, 216)),
           child: Form(
             key: _form,
             child: SingleChildScrollView(
@@ -47,17 +40,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: EdgeInsets.all(size.height * 0.03),
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: size.height * 0.35,
-                      ),
-                      Text(
-                        'PassVault',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 34,
+                      Container(
+                        height: size.height * 0.4,
+                        width: size.width * 1,
+                        child: ColorFiltered(
+                          colorFilter: ColorFilter.mode(
+                            Color.fromARGB(255, 255, 206, 216), // Blend color
+                            BlendMode.multiply, // Blend mode
+                          ),
+                          child: Image.asset(
+                            'assets/cc.png',
+                            colorBlendMode: BlendMode.multiply,
+                            width: double.infinity,
+                          ),
                         ),
                       ),
+
                       SizedBox(
                         height: size.height * 0.03,
                       ),

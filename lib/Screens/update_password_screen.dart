@@ -74,9 +74,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
             if (snapshot.connectionState == ConnectionState.done) {
               var data = snapshot.data!.data();
               var savedName = data!['Name'];
-              var savedEmail = data!['Email'];
+              var savedEmail = data['Email'];
               var savedUsername = data['Username'];
-              var savedPassword = data!['Password'];
+              var savedPassword = data['Password'];
 
               return Padding(
                 padding: EdgeInsets.all(size.width * 0.004),
