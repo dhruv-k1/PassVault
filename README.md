@@ -1,6 +1,6 @@
-# pass
+# PassVault
 
-A new Flutter project.
+A secure mobile application for storing and updating passwords.
 
 ## Getting Started
 
