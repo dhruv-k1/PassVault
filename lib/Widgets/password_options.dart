@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pass/screens/update_password_screen.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 
 class BottomSheetDetails extends StatelessWidget {
   //const BottomSheetDetails({super.key});
@@ -56,7 +56,7 @@ class BottomSheetDetails extends StatelessWidget {
           ));
         });
       } catch (e) {
-        print("Error deleting document $e");
+        print("Error");
       }
     }
 
@@ -140,14 +140,7 @@ class BottomSheetDetails extends StatelessWidget {
             title: Text('Edit'),
             trailing: Icon(Icons.edit),
             onTap: () {
-              Navigator.pop(context);
-
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UpdatePasswordScreen(
-                            id: id,
-                          )));
+              Get.off(UpdatePasswordScreen(id: id));
             },
           ),
         ),

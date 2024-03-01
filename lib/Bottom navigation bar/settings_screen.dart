@@ -36,6 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   'Logged Out!',
                   'Signed out sucessfully',
                   snackPosition: SnackPosition.BOTTOM,
+                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 4),
                   backgroundColor: Colors.grey.shade800,
                   titleText: Text('Logged Out!',
                       style: TextStyle(color: Colors.white),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pass/Models/randomkey.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 class GeneratorScreen extends StatefulWidget {
   const GeneratorScreen({super.key});
@@ -19,6 +18,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
   bool isUppercase = true;
   bool isNumbers = true;
   bool isSpecialCh = true;
+  SliderController sliderController = Get.put(SliderController());
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +31,8 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
       includeSpecialChars: isSpecialCh,
       length: passwordlength,
     );
+
+    //RxInt length = 8.obs;
 
     void checkSwitches() {
       if (!(isLowercase || isUppercase || isNumbers || isSpecialCh)) {
@@ -132,14 +134,14 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                       inactiveColor: Colors.red.shade200,
                       min: 4,
                       max: 20,
-                      divisions: 17,
+                      divisions: 16,
                       //label: passwordlength.toInt().toString(),
                       value: passwordlength.toDouble(),
                       onChanged: (double newvalue) {
                         setState(() {
                           passwordlength = newvalue.round();
                         });
-                        passwordlength = newvalue.round();
+                        // passwordlength = newvalue.round();
                       },
                     ),
                     SizedBox(
@@ -240,5 +242,12 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
         ),
       ),
     );
+  }
+}
+
+class SliderController extends GetxController {
+  var sliderValue = 8.0.obs;
+  changeValue(value) {
+    sliderValue = value;
   }
 }

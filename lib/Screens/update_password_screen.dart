@@ -65,173 +65,168 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
               print('Something went wrong');
             }
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+            // if (snapshot.connectionState == ConnectionState.waiting) {
+            //   return Center(
+            //     child: CircularProgressIndicator(),
+            //   );
+            // }
 
-            if (snapshot.connectionState == ConnectionState.done) {
-              var data = snapshot.data!.data();
-              var savedName = data!['Name'];
-              var savedEmail = data['Email'];
-              var savedUsername = data['Username'];
-              var savedPassword = data['Password'];
+            // if (snapshot.connectionState == ConnectionState.done) {
+            var data = snapshot.data!.data();
+            var savedName = data!['Name'];
+            var savedEmail = data['Email'];
+            var savedUsername = data['Username'];
+            var savedPassword = data['Password'];
 
-              return Padding(
-                padding: EdgeInsets.all(size.width * 0.004),
-                child: Form(
-                    key: _form,
-                    child: SingleChildScrollView(
-                        child: Column(children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.fromLTRB(
-                            size.width * 0.05,
-                            size.height * 0.04,
-                            size.width * 0.05,
-                            size.height * 0.01),
-                        child: TextFormField(
-                          autofocus: false,
-                          initialValue: savedName,
-                          onChanged: (value) {
-                            savedName = value;
-                          },
-                          decoration: InputDecoration(
-                              hintText: 'Name',
-                              labelText: 'Name',
-                              labelStyle: TextStyle(
-                                fontSize: size.height * 0.02,
-                              ),
-                              border: OutlineInputBorder(),
-                              errorStyle: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: size.height * 0.018)),
-                          //textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "*Please enter name";
-                            } else
-                              return null;
-                          },
-                        ),
+            return Padding(
+              padding: EdgeInsets.all(size.width * 0.004),
+              child: Form(
+                  key: _form,
+                  child: SingleChildScrollView(
+                      child: Column(children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.fromLTRB(
+                          size.width * 0.05,
+                          size.height * 0.04,
+                          size.width * 0.05,
+                          size.height * 0.01),
+                      child: TextFormField(
+                        autofocus: false,
+                        initialValue: savedName,
+                        onChanged: (value) {
+                          savedName = value;
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'Name',
+                            labelText: 'Name',
+                            labelStyle: TextStyle(
+                              fontSize: size.height * 0.02,
+                            ),
+                            border: OutlineInputBorder(),
+                            errorStyle: TextStyle(
+                                color: Colors.blue,
+                                fontSize: size.height * 0.018)),
+                        //textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "*Please enter name";
+                          } else
+                            return null;
+                        },
                       ),
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.05,
-                            vertical: size.height * 0.01),
-                        child: TextFormField(
-                          autofocus: false,
-                          initialValue: savedUsername,
-                          onChanged: (value) {
-                            savedUsername = value;
-                          },
-                          decoration: InputDecoration(
-                              hintText: 'Username',
-                              labelText: 'Username',
-                              labelStyle: TextStyle(
-                                fontSize: size.height * 0.02,
-                              ),
-                              border: OutlineInputBorder(),
-                              errorStyle: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: size.height * 0.018)),
-                          textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "*Please enter name";
-                            } else
-                              return null;
-                          },
-                        ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.05,
+                          vertical: size.height * 0.01),
+                      child: TextFormField(
+                        autofocus: false,
+                        initialValue: savedUsername,
+                        onChanged: (value) {
+                          savedUsername = value;
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'Username',
+                            labelText: 'Username',
+                            labelStyle: TextStyle(
+                              fontSize: size.height * 0.02,
+                            ),
+                            border: OutlineInputBorder(),
+                            errorStyle: TextStyle(
+                                color: Colors.blue,
+                                fontSize: size.height * 0.018)),
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "*Please enter name";
+                          } else
+                            return null;
+                        },
                       ),
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.05,
-                            vertical: size.height * 0.01),
-                        child: TextFormField(
-                          initialValue: savedPassword,
-                          onChanged: (value) {
-                            savedPassword = value;
-                          },
-                          decoration: InputDecoration(
-                              hintText: 'Password',
-                              labelText: 'Password',
-                              labelStyle: TextStyle(
-                                fontSize: size.height * 0.02,
-                              ),
-                              border: OutlineInputBorder(),
-                              errorStyle: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: size.height * 0.018)),
-                          textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "*Please enter password";
-                            } else
-                              return null;
-                          },
-                        ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.05,
+                          vertical: size.height * 0.01),
+                      child: TextFormField(
+                        initialValue: savedPassword,
+                        onChanged: (value) {
+                          savedPassword = value;
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'Password',
+                            labelText: 'Password',
+                            labelStyle: TextStyle(
+                              fontSize: size.height * 0.02,
+                            ),
+                            border: OutlineInputBorder(),
+                            errorStyle: TextStyle(
+                                color: Colors.blue,
+                                fontSize: size.height * 0.018)),
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "*Please enter password";
+                          } else
+                            return null;
+                        },
                       ),
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.05,
-                            vertical: size.height * 0.01),
-                        child: TextFormField(
-                          autofocus: false,
-                          initialValue: savedEmail,
-                          onChanged: (value) {
-                            savedEmail = value;
-                          },
-                          decoration: InputDecoration(
-                              hintText: 'Email',
-                              labelText: 'Email',
-                              labelStyle: TextStyle(
-                                fontSize: size.height * 0.02,
-                              ),
-                              border: OutlineInputBorder(),
-                              errorStyle: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: size.height * 0.018)),
-                          textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "*Please enter email address";
-                            } else if (!value.contains('@')) {
-                              return "*Please enter valid email";
-                            } else
-                              return null;
-                          },
-                        ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.05,
+                          vertical: size.height * 0.01),
+                      child: TextFormField(
+                        autofocus: false,
+                        initialValue: savedEmail,
+                        onChanged: (value) {
+                          savedEmail = value;
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'Email',
+                            labelText: 'Email',
+                            labelStyle: TextStyle(
+                              fontSize: size.height * 0.02,
+                            ),
+                            border: OutlineInputBorder(),
+                            errorStyle: TextStyle(
+                                color: Colors.blue,
+                                fontSize: size.height * 0.018)),
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "*Please enter email address";
+                          } else if (!value.contains('@')) {
+                            return "*Please enter valid email";
+                          } else
+                            return null;
+                        },
                       ),
-                      Container(
-                        padding: EdgeInsets.all(size.width * 0.02),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                                onPressed: () {
-                                  if (_form.currentState!.validate()) {
-                                    updateInfo(
-                                        widget.id,
-                                        savedName,
-                                        savedUsername,
-                                        savedEmail,
-                                        savedPassword);
-                                  }
-                                },
-                                child: Text(
-                                  "Update",
-                                  style:
-                                      TextStyle(fontSize: size.height * 0.02),
-                                ))
-                          ],
-                        ),
-                      )
-                    ]))),
-              );
-            }
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(size.width * 0.02),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                              onPressed: () {
+                                if (_form.currentState!.validate()) {
+                                  updateInfo(widget.id, savedName,
+                                      savedUsername, savedEmail, savedPassword);
+                                }
+                              },
+                              child: Text(
+                                "Update",
+                                style: TextStyle(fontSize: size.height * 0.02),
+                              ))
+                        ],
+                      ),
+                    )
+                  ]))),
+            );
+            // }
 
-            return SizedBox.shrink();
+            // return SizedBox.shrink();
           },
         ));
   }
